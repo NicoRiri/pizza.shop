@@ -3,18 +3,30 @@
 namespace pizzashop\shop\domain\service\Commande;
 
 use DateTime;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use pizzashop\shop\domain\dto\CommandeDTO;
 use pizzashop\shop\domain\dto\ItemDTO;
 use pizzashop\shop\domain\entities\commande\Commande;
 use pizzashop\shop\domain\entities\commande\Item;
 use pizzashop\shop\domain\service\Produit\sCatalogue;
+use Ramsey\Uuid\Uuid;
 
 class sCommande implements iCommander
 {
 
+    private $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger('logger');
+        $this->logger->pushHandler(new StreamHandler('../logs.txt', Logger::INFO));
+    }
+
     public function validerCommande(string $UUID): void
     {
         Commande::where('id', $UUID)->update(['etat' => 1]);
+        $this->logger->info('Commande validée.', ['UUID' => $UUID]);
 
     }
 
@@ -22,8 +34,8 @@ class sCommande implements iCommander
     {
         $sCatalogue = new sCatalogue();
 
-        //penser à randomize cte merde
-        $id = "hepioqeouhgriohgriogroigoiegrjoi";
+        $uuid4 = Uuid::uuid4();
+        $id = $uuid4->toString();
 
         $total = 0;
         foreach ($commandeDTO->itemDTO as $item){
@@ -53,12 +65,13 @@ class sCommande implements iCommander
         $comm->montant_total = $total;
         $comm->mail_client = $commandeDTO->mail_client;
         $comm->save();
+        $this->logger->info('Nouvelle commande créée.', ['ID' => $id]);
     }
 
     function accederCommande(string $UUID): CommandeDTO
     {
         $comm = Commande::where('id', $UUID)->first();
-
+        $this->logger->info('Accès à une commande.', ['UUID' => $UUID]);
         return new CommandeDTO($comm->id, $comm->date_commande, $comm->type_livraison, $comm->mail_client, $comm->montant_total, $comm->delai, new ItemDTO($comm->item()->id, $comm->item()->libelle, $comm->item()->taille, $comm->item()->quantite, $comm->item()->tarif));
 
     }
