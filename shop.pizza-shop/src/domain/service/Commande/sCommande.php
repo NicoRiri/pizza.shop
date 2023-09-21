@@ -5,6 +5,7 @@ namespace pizzashop\shop\domain\service\Commande;
 use DateTime;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use PhpParser\Error;
 use pizzashop\shop\domain\dto\CommandeDTO;
 use pizzashop\shop\domain\dto\ItemDTO;
 use pizzashop\shop\domain\entities\commande\Commande;
@@ -15,7 +16,7 @@ use Ramsey\Uuid\Uuid;
 class sCommande implements iCommander
 {
 
-    private $logger;
+    private Logger $logger;
 
     public function __construct()
     {
@@ -32,6 +33,46 @@ class sCommande implements iCommander
 
     function creerCommande(CommandeDTO $commandeDTO): void
     {
+        $boolFinal = true;
+
+        if (is_null($commandeDTO->mail_client)){
+            $boolFinal = false;
+        }
+        if (!filter_var($commandeDTO->mail_client, FILTER_VALIDATE_EMAIL)){
+            $boolFinal = false;
+        }
+
+        if ($commandeDTO->type_livraison != 0 || $commandeDTO->type_livraison != 1 || $commandeDTO->type_livraison != 2){
+            $boolFinal = false;
+        }
+
+        if (is_null($commandeDTO->itemDTO)){
+            $boolFinal = false;
+        }
+
+        if (empty($commandeDTO->itemDTO)){
+            $boolFinal = false;
+        }
+
+        if ($boolFinal){
+            foreach ($commandeDTO->itemDTO as $item){
+                if ($item->numero < 0 || $item->quantite < 0){
+                    $boolFinal = false;
+                }
+                if (is_null($item->taille)){
+                    $boolFinal = false;
+                }
+                if ($item->taille != 1 || $item->taille != 2){
+                    $boolFinal = false;
+                }
+
+            }
+        }
+
+        if (!$boolFinal){
+            throw new \Error("Commande non valide");
+        }
+
         $sCatalogue = new sCatalogue();
 
         $uuid4 = Uuid::uuid4();

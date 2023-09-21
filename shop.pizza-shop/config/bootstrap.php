@@ -1,9 +1,15 @@
 <?php
 
+use DI\ContainerBuilder;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use pizzashop\shop\domain\service\Eloquent\Eloquent;
 use Slim\Factory\AppFactory;
 
-// Crée l'app et le moteur de templates
+$builder = new ContainerBuilder();
+
+$container=$builder->build();
+
 $app = AppFactory::create();
 
 // Ajoute le routing middleware

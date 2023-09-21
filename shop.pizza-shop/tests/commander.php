@@ -13,6 +13,6 @@ $db->bootEloquent();
 
 $sCo = new \pizzashop\shop\domain\service\Commande\sCommande();
 
-$commande = new \pizzashop\shop\domain\dto\CommandeDTO("nikollei@mail.com", "0", [new \pizzashop\shop\domain\dto\ItemDTO(1, 2, 3)]);
+$commande = new \pizzashop\shop\domain\dto\CommandeDTO("laura@steak.bite", "0", [new \pizzashop\shop\domain\dto\ItemDTO(1, 2, 3), new \pizzashop\shop\domain\dto\ItemDTO(3, 2, 3)]);
 
 $sCo->creerCommande($commande);
