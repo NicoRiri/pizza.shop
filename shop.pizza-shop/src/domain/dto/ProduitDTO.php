@@ -18,9 +18,9 @@ class ProduitDTO extends \pizzashop\shop\domain\dto\DTO
      * @param string $libelle_produit
      * @param string $libelle_categorie
      * @param string $libelle_taille
-     * @param int $tarif
+     * @param float $tarif
      */
-    public function __construct(int $numero_produit, int $taille, string $libelle_produit, string $libelle_categorie, string $libelle_taille, int $tarif)
+    public function __construct(int $numero_produit, int $taille, string $libelle_produit, string $libelle_categorie, string $libelle_taille, float $tarif)
     {
         $this->numero_produit = $numero_produit;
         $this->taille = $taille;

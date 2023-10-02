@@ -11,7 +11,21 @@ use Slim\Factory\AppFactory;
 //
 //$container=$builder->build();
 
-$app = AppFactory::create();
+$containerBuilder = new ContainerBuilder();
+
+$containerBuilder->addDefinitions([
+    // Exemple d'injection d'une dépendance
+    'sCommande' => function () {
+        return new \pizzashop\shop\domain\service\Commande\sCommande();
+    },
+
+    // Vous pouvez ajouter d'autres dépendances ici
+]);
+
+$container = $containerBuilder->build();
+
+$app = AppFactory::createFromContainer($container);
+
 
 // Ajoute le routing middleware
 $app->addRoutingMiddleware();
