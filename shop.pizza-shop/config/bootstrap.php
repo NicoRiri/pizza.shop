@@ -1,14 +1,15 @@
 <?php
 
 use DI\ContainerBuilder;
+use Illuminate\Database\Capsule\Manager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use pizzashop\shop\domain\service\Eloquent\Eloquent;
 use Slim\Factory\AppFactory;
-
-$builder = new ContainerBuilder();
-
-$container=$builder->build();
+//
+//$builder = new ContainerBuilder();
+//
+//$container=$builder->build();
 
 $app = AppFactory::create();
 
@@ -21,9 +22,11 @@ $app->addErrorMiddleware(true, false, false);
 // Définit le chemin de base
 $app->setBasePath('');
 
-// Initialise Eloquent avec le fichier de configuration
-Eloquent::init(__DIR__ . '/../config/commande.db.ini');
-Eloquent::init(__DIR__ . '/../config/catalog.db.ini');
+$db = new Manager();
+$db->addConnection(parse_ini_file(__DIR__ . '/../config/commande.db.ini'), "commande");
+$db->addConnection(parse_ini_file(__DIR__ . '/../config/catalogue.db.ini'), "catalogue");
+$db->setAsGlobal();
+$db->bootEloquent();
 
 // Initialise la session
 session_start();

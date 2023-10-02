@@ -12,8 +12,8 @@ class Commande extends \Illuminate\Database\Eloquent\Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    public function item(){
-        return $this->hasMany(Item::class, "id");
+    public function items(){
+        return $this->hasMany(Item::class, "commande_id");
     }
 
 }

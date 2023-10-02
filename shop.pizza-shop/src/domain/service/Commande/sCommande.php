@@ -42,7 +42,7 @@ class sCommande implements iCommander
             $boolFinal = false;
         }
 
-        if ($commandeDTO->type_livraison != 0 || $commandeDTO->type_livraison != 1 || $commandeDTO->type_livraison != 2){
+        if ($commandeDTO->type_livraison != 3 || $commandeDTO->type_livraison != 1 || $commandeDTO->type_livraison != 2){
             $boolFinal = false;
         }
 
@@ -112,8 +112,18 @@ class sCommande implements iCommander
     function accederCommande(string $UUID): CommandeDTO
     {
         $comm = Commande::where('id', $UUID)->first();
+        $item = $comm->items()->get();
+        var_dump($item);
+        $array = [];
+        foreach ($item as $i){
+            $itemDTO = new ItemDTO($i->numero, $i->taille, $i->quantite);
+            $array[] = $itemDTO;
+        }
+
+
+
         $this->logger->info('Accès à une commande.', ['UUID' => $UUID]);
-        return new CommandeDTO($comm->id, $comm->date_commande, $comm->type_livraison, $comm->mail_client, $comm->montant_total, $comm->delai, new ItemDTO($comm->item()->id, $comm->item()->libelle, $comm->item()->taille, $comm->item()->quantite, $comm->item()->tarif));
+        return new CommandeDTO($comm->mail_client, $comm->type_livraison, $array);
 
     }
 }
