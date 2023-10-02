@@ -10,7 +10,7 @@ class ProduitDTO extends \pizzashop\shop\domain\dto\DTO
     public string $libelle_produit;
     public string $libelle_categorie;
     public string $libelle_taille;
-    public int $tarif;
+    public float $tarif;
 
     /**
      * @param int $numero_produit

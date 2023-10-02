@@ -11,7 +11,9 @@ use pizzashop\shop\domain\dto\ItemDTO;
 use pizzashop\shop\domain\entities\commande\Commande;
 use pizzashop\shop\domain\entities\commande\Item;
 use pizzashop\shop\domain\service\Produit\sCatalogue;
+use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
+use Slim\Exception\HttpNotFoundException;
 
 class sCommande implements iCommander
 {
@@ -112,18 +114,20 @@ class sCommande implements iCommander
     function accederCommande(string $UUID): CommandeDTO
     {
         $comm = Commande::where('id', $UUID)->first();
+        if (is_null($comm)){
+            return new CommandeDTO($UUID, 0, 0, 0, "", 0, 0, []);
+        }
         $item = $comm->items()->get();
-        var_dump($item);
         $array = [];
         foreach ($item as $i){
-            $itemDTO = new ItemDTO($i->numero, $i->taille, $i->quantite);
+            $itemDTO = new ItemDTO($i->numero, $i->taille, $i->quantite, $i->libelle, $i->libelle_taille, $i->tarif);
             $array[] = $itemDTO;
         }
 
 
 
         $this->logger->info('Accès à une commande.', ['UUID' => $UUID]);
-        return new CommandeDTO($comm->mail_client, $comm->type_livraison, $array);
+        return new CommandeDTO($comm->id, $comm->date_commande, $comm->type_livraison, $comm->etat, $comm->mail_client, $comm->montant_total, $comm->delai, $array);
 
     }
 }
