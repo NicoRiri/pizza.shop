@@ -14,6 +14,7 @@ use pizzashop\shop\domain\service\Produit\sCatalogue;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 use Slim\Exception\HttpNotFoundException;
+use function PHPUnit\Framework\isEmpty;
 
 class sCommande implements iCommander
 {
@@ -33,38 +34,34 @@ class sCommande implements iCommander
 
     }
 
-    function creerCommande(CommandeDTO $commandeDTO): void
+    function creerCommande(CommandeDTO $commandeDTO): CommandeDTO
     {
         $boolFinal = true;
 
-        if (is_null($commandeDTO->mail_client)){
+        if ($commandeDTO->mail_client == ""){
             $boolFinal = false;
         }
         if (!filter_var($commandeDTO->mail_client, FILTER_VALIDATE_EMAIL)){
             $boolFinal = false;
         }
 
-        if ($commandeDTO->type_livraison != 3 || $commandeDTO->type_livraison != 1 || $commandeDTO->type_livraison != 2){
+        if ($commandeDTO->type_livraison != 3 && $commandeDTO->type_livraison != 1 && $commandeDTO->type_livraison != 2){
             $boolFinal = false;
         }
 
-        if (is_null($commandeDTO->itemDTO)){
-            $boolFinal = false;
-        }
-
-        if (empty($commandeDTO->itemDTO)){
+        if ($commandeDTO->item == null){
             $boolFinal = false;
         }
 
         if ($boolFinal){
-            foreach ($commandeDTO->itemDTO as $item){
+            foreach ($commandeDTO->item as $item){
                 if ($item->numero < 0 || $item->quantite < 0){
                     $boolFinal = false;
                 }
                 if (is_null($item->taille)){
                     $boolFinal = false;
                 }
-                if ($item->taille != 1 || $item->taille != 2){
+                if ($item->taille != 1 && $item->taille != 2){
                     $boolFinal = false;
                 }
 
@@ -77,11 +74,10 @@ class sCommande implements iCommander
 
         $sCatalogue = new sCatalogue();
 
-        $uuid4 = Uuid::uuid4();
-        $id = $uuid4->toString();
+        $id = $commandeDTO->id;
 
         $total = 0;
-        foreach ($commandeDTO->itemDTO as $item){
+        foreach ($commandeDTO->item as $item){
             $prod = $sCatalogue->getProduit($item->numero, $item->taille);
             $total+= $prod->tarif;
             $exp = new Item;
@@ -99,16 +95,18 @@ class sCommande implements iCommander
 
         $currentDateTime = new DateTime('now');
         $currentDate = $currentDateTime->format('Y-m-d');
+        $commdto = new CommandeDTO($id, $currentDate, $commandeDTO->type_livraison, 1, $commandeDTO->mail_client, $total, 0, $commandeDTO->item);
         $comm = new Commande;
         $comm->id = $id;
         $comm->delai = 0;
         $comm->date_commande = $currentDate;
         $comm->type_livraison = $commandeDTO->type_livraison;
-        $comm->etat = 0;
+        $comm->etat = 1;
         $comm->montant_total = $total;
         $comm->mail_client = $commandeDTO->mail_client;
         $comm->save();
         $this->logger->info('Nouvelle commande créée.', ['ID' => $id]);
+        return $commdto;
     }
 
     function accederCommande(string $UUID): CommandeDTO

@@ -11,7 +11,7 @@ class CommandeDTO extends \pizzashop\shop\domain\dto\DTO
     public int $type_livraison;
     public int $etat;
     public string $mail_client;
-    public int $montant;
+    public float $montant;
     public int $delai;
     public array $item;
 
@@ -25,7 +25,7 @@ class CommandeDTO extends \pizzashop\shop\domain\dto\DTO
      * @param int $delai
      * @param array $item
      */
-    public function __construct(string $id, string $date_commande, int $type_livraison, int $etat, string $mail_client, int $montant, int $delai, array $item)
+    public function __construct(string $id, string $date_commande, int $type_livraison, int $etat, string $mail_client, float $montant, int $delai, array $item)
     {
         $this->id = $id;
         $this->date_commande = $date_commande;
