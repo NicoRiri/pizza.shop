@@ -29,7 +29,7 @@ class sCommande implements iCommander
 
     public function validerCommande(string $UUID): void
     {
-        Commande::where('id', $UUID)->update(['etat' => 1]);
+        Commande::where('id', $UUID)->update(['etat' => 2]);
         $this->logger->info('Commande validée.', ['UUID' => $UUID]);
 
     }
@@ -127,5 +127,15 @@ class sCommande implements iCommander
         $this->logger->info('Accès à une commande.', ['UUID' => $UUID]);
         return new CommandeDTO($comm->id, $comm->date_commande, $comm->type_livraison, $comm->etat, $comm->mail_client, $comm->montant_total, $comm->delai, $array);
 
+    }
+
+    function existeCommande(String $UUID) : bool
+    {
+        $comm = Commande::where('id', $UUID)->first();
+        if ($comm === null){
+            return false;
+        } else {
+            return true;
+        }
     }
 }
