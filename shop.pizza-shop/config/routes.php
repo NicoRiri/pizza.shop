@@ -13,4 +13,12 @@ return function( \Slim\App $app):void {
         ->setName('accederCommande');
     $app->patch("/commandes/{id}[/]", \pizzashop\shop\app\actions\ValiderCommandeAction::class)
         ->setName('validerCommande');
+
+    $app->get('/inscription[/]', \pizzashop\shop\app\actions\InscriptionAction::class)
+        ->setName('inscription');
+    $app->post('/inscription[/]', \pizzashop\shop\app\actions\InscriptionProcessAction::class);
+
+    $app->get('/connexion[/]', \pizzashop\shop\app\actions\ConnexionAction::class)
+        ->setName('connexion');
+    $app->post('/connexion[/]', \pizzashop\shop\app\actions\ConnexionProcessAction::class);
 };
