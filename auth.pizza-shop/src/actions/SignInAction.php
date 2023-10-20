@@ -14,8 +14,11 @@ class SignInAction extends AbstractAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $auth = $request->getHeader("Authorization");
-        $arr = explode(" ", $auth[0]);
-        $token = $arr[1];
+        $idmdp = explode(" ", $auth[0]);
+        $idmdp = base64_decode($idmdp[1]);
+        $idmdp = explode(":", $idmdp);
+        $mail = $idmdp[0];
+        $mdp = $idmdp[1];
 
         $sAuth = new sAuthentification();
         $cpl = $sAuth->signIn($mail, $mdp);

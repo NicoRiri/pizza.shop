@@ -39,24 +39,27 @@ class sAuthentification implements isAuthentification
 
     }
 
-    public function refresh($accessToken, $refresh_token)
+    public function refresh($refresh_token)
     {
         $jwt = new ManagerJWT();
         $ap = new AuthentificationProvider();
         $id = "";
 
-        $email = $jwt->getIdToken($accessToken);
-        $res = Users::where([['email', $email], ['refresh_token', $refresh_token]])->first();
+        $res = Users::where('refresh_token', $refresh_token)->first();
         if ($res != null) {
+            $date = new DateTime();
+            if ($res->refresh_token_expiration_date > $date){
+                throw new \Exception("Refresh token expiré");
+            }
+            $email = $res->email;
             $accessToken = $jwt->createToken($id);
             $refreshtoken = Uuid::uuid4();
-            $date = new DateTime();
             $date->modify('+1 hour');
             Users::where('email', $email)->update(['refresh_token' => $refreshtoken]);
             Users::where('email', $email)->update(['refresh_token_expiration_date' => $date]);
             return new CoupleJWTDTO($accessToken, $refreshtoken);
         }
-        return null;
+        throw new \Exception("Pas le bon refresh token");
     }
 
     public function signUp($email, $password)

@@ -13,19 +13,22 @@ class RefreshAction extends AbstractAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $auth = $request->getHeader("Authorization");
-        $idmdp = explode(" ", $auth[0]);
-        $idmdp = base64_decode($idmdp[1]);
-        $idmdp = explode(":", $idmdp);
-        $mail = $idmdp[0];
-        $mdp = $idmdp[1];
-
+        $arr = explode(" ", $auth[0]);
+        $token = $arr[1];
         $sAuth = new sAuthentification();
-        $cpl = $sAuth->signIn($mail, $mdp);
+
+        try {
+            $cpl = $sAuth->refresh($token);
+        } catch (\Exception $e){
+            throw new HttpUnauthorizedException($request, $e->getMessage());
+        }
+
+
         if ($cpl != null){
             $response->withStatus(200);
             $response->getBody()->write(json_encode($cpl));
         } else {
-            throw new HttpUnauthorizedException($request, "Pas les bons credentials");
+            throw new HttpUnauthorizedException($request, "Mauvais token");
         }
 
         return $response;

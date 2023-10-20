@@ -27,7 +27,7 @@ class ValidateAction extends AbstractAction
                 throw new HttpUnauthorizedException($request, "Token expiré");
             }
         } catch (\Exception $exception){
-            throw new HttpUnauthorizedException($request, $exception);
+            throw new HttpUnauthorizedException($request, $exception->getMessage());
         }
 
 

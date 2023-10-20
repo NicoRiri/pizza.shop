@@ -3,8 +3,10 @@
 namespace pizzashop\auth\api\service;
 
 use Exception;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Firebase\JWT\SignatureInvalidException;
 
 class ManagerJWT
 {
@@ -24,16 +26,15 @@ class ManagerJWT
     /**
      * @throws Exception
      */
-    public function validateToken($token) {
+    public function validateToken($token)
+    {
         try {
             $payload = JWT::decode($token, new Key($this->secret, 'HS256'));
-            if (time() > $payload->exp) {
-                return false;
-            } else {
-                return true;
-            }
-        } catch (Exception $e) {
-            throw new Exception($e);
+            return true;
+        } catch (ExpiredException $expiredException) {
+            throw new Exception("Token expiré");
+        } catch (Exception $signatureInvalidException) {
+            throw new Exception("Token invalide");
         }
     }
 
