@@ -33,6 +33,20 @@ $app->addRoutingMiddleware();
 // Ajoute le middleware d'erreurs
 $app->addErrorMiddleware(true, false, false);
 
+/**
+* ajouter le middleware CORS sur toutes les routes
+*/
+$app->add(new CorsMiddleware::class);
+/*
+* déclarer les routes option – il suffit de répondre en ajoutant les
+* headers grâce qu middleware
+*/
+$app->options('/{routes:.+}',
+function( Request $rq,
+ Response $rs, array $args) : Response {
+ return $rs;
+});
+
 // Définit le chemin de base
 $app->setBasePath('');
 
