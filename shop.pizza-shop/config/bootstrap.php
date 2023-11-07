@@ -25,6 +25,7 @@ $containerBuilder->addDefinitions([
 $container = $containerBuilder->build();
 
 $app = AppFactory::createFromContainer($container);
+$app->addBodyParsingMiddleware();
 
 
 // Ajoute le routing middleware
@@ -36,16 +37,7 @@ $app->addErrorMiddleware(true, false, false);
 /**
 * ajouter le middleware CORS sur toutes les routes
 */
-$app->add(new CorsMiddleware::class);
-/*
-* déclarer les routes option – il suffit de répondre en ajoutant les
-* headers grâce qu middleware
-*/
-$app->options('/{routes:.+}',
-function( Request $rq,
- Response $rs, array $args) : Response {
- return $rs;
-});
+$app->add(\pizzashop\shop\app\middleware\midCors::class);
 
 // Définit le chemin de base
 $app->setBasePath('');
