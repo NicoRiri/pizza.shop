@@ -8,7 +8,6 @@ return function( \Slim\App $app):void {
 
     $app->post('/api/users/signin[/]', \pizzashop\auth\api\actions\SignInAction::class)
         ->setName('signin');
-
     $app->get('/api/users/validate[/]', \pizzashop\auth\api\actions\ValidateAction::class)
         ->setName('valider');
     $app->post("/api/users/refresh[/]", \pizzashop\auth\api\actions\RefreshAction::class)
