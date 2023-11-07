@@ -29,10 +29,8 @@ class SignInAction extends AbstractAction
             $res = json_decode($res, true);
             $response->getBody()->write("Vous êtes connectés, votre access token est : ".$res["accesToken"].", votre refresh token est ".$res["accesToken"]);
         } catch (ClientException $e){
-            throw new HttpUnauthorizedException($request, "Mauvais log");
+            throw new HttpUnauthorizedException($request, "Ces informations auront pas permis de vous authentifier");
         }
-
-        $response->getBody()->write("Ces informations auront pas permis de vous authentifier");
         return $response;
     }
 }
