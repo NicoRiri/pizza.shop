@@ -2,11 +2,9 @@
 
 namespace pizzashop\shop\app\actions;
 
-use pizzashop\shop\domain\service\Commande\sCommande;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpNotFoundException;
-use function MongoDB\BSON\toJSON;
 
 class AccederCommandeAction extends AbstractAction
 {
