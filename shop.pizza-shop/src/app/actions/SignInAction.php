@@ -24,7 +24,7 @@ class SignInAction extends AbstractAction
 
         $client = new Client();
         try {
-            $res = $client->request('POST', "http://nrv.auth.api/api/users/signin", ['auth' => [$mail, $mdp]]);
+            $res = $client->request('POST', "http://api.pizza-auth/api/users/signin", ['auth' => [$mail, $mdp]]);
             $res = $res->getBody()->getContents();
             $res = json_decode($res, true);
             $response->getBody()->write("Vous êtes connectés, votre access token est : ".$res["accesToken"].", votre refresh token est ".$res["accesToken"]);
