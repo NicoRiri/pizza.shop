@@ -2,22 +2,25 @@
 
 namespace pizzashop\shop\app\actions;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Exception\HttpUnauthorizedException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ValiderCommandeAction extends AbstractAction
 {
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
+        $json = $request->getParsedBody();
         $sco = $this->container->get("sCommande");
-        $json = $request->getBody();
-        $json = json_decode($json, true);
+        if (!isset($json["etat"])) {
+            throw new HttpUnauthorizedException($request, "L'état doit être 'validee'");
+        }
         $etat = $json["etat"];
-        if ($etat == "validee"){
+        if ($etat == "validee") {
             //Checker si la commande existe
             if (!$sco->existeCommande($args['id'])) {
                 throw new HttpNotFoundException($request, "Commande inexistante");
@@ -25,7 +28,7 @@ class ValiderCommandeAction extends AbstractAction
 
             try {
                 $comm = $sco->accederCommande($args['id']);
-                if ($comm->etat == 1){
+                if ($comm->etat == 1) {
                     $sco->validerCommande($args['id']);
                 } else {
                     throw new HttpBadRequestException($request, "Transition pas correcte");
@@ -34,6 +37,8 @@ class ValiderCommandeAction extends AbstractAction
             } catch (\Error $e) {
                 throw new HttpInternalServerErrorException($request, "Problème interne");
             }
+        } else {
+            throw new HttpUnauthorizedException($request, "L'état doit être 'validee'");
         }
 
         $res = $sco->accederCommande($args['id']);
@@ -56,4 +61,4 @@ class ValiderCommandeAction extends AbstractAction
         return $response;
     }
 
-    }
+}

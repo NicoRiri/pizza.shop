@@ -4,10 +4,8 @@ namespace pizzashop\shop\app\actions;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use pizzashop\shop\domain\service\Commande\sCommande;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpUnauthorizedException;
 
 class SignInAction extends AbstractAction
