@@ -12,5 +12,6 @@ return function( \Slim\App $app):void {
         ->setName('accederCommande');
     $app->patch("/commandes/{id}[/]", \pizzashop\shop\app\actions\ValiderCommandeAction::class)
         ->setName('validerCommande');
-    $app->post("/connexion[/]", )
+    $app->post("/connexion[/]", \pizzashop\shop\app\actions\SignInAction::class)
+        ->setName("connexion");
 };
