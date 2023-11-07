@@ -8,9 +8,9 @@ return function( \Slim\App $app):void {
 
     $app->post('/commandes[/]', \pizzashop\shop\app\actions\CreerCommandeAction::class)
         ->setName('creer_commande');
-
     $app->get('/commandes/{id}[/]', \pizzashop\shop\app\actions\AccederCommandeAction::class)
         ->setName('accederCommande');
     $app->patch("/commandes/{id}[/]", \pizzashop\shop\app\actions\ValiderCommandeAction::class)
         ->setName('validerCommande');
+    $app->post("/connexion[/]", )
 };
