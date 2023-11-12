@@ -63,13 +63,13 @@ Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ord
 
 ## 🏹 Liens utiles et compte
 
-### Liens
+### ✨ Liens
 
 - API de pizza.shop : http://localhost:2080
 - API d'authentification de pizza.shop : http://localhost:2780
 - Adminer : http://localhost:8080
 
-### Compte
+### 👤 Compte
 
 - nom d'utilisateur : AlixPerrot@free.fr
 - mot de passe : AlixPerrot
