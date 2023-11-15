@@ -2,7 +2,11 @@
 
 namespace pizzashop\shop\domain\entities\catalogue;
 
-class Produit extends \Illuminate\database\eloquent\Model
+use Illuminate\database\eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class Produit extends Model
 {
 
     protected $connection = 'catalogue';
@@ -11,12 +15,12 @@ class Produit extends \Illuminate\database\eloquent\Model
     public $timestamps = false;
     protected $fillable = ['numero', 'libelle', 'description','image'];
 
-    public function categorie(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function categorie(): BelongsTo
     {
         return $this->belongsTo(Categorie::class, 'categorie_id');
     }
 
-    public function tailles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function tailles(): BelongsToMany
     {
         return $this->belongsToMany(Taille::class, 'tarif', 'produit_id', 'taille_id')
             ->withPivot('tarif');

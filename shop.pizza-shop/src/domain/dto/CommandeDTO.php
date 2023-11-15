@@ -2,7 +2,7 @@
 
 namespace pizzashop\shop\domain\dto;
 
-class CommandeDTO extends \pizzashop\shop\domain\dto\DTO
+class CommandeDTO extends DTO
 {
 
 

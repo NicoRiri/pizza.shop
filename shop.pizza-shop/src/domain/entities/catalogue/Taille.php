@@ -2,7 +2,9 @@
 
 namespace pizzashop\shop\domain\entities\catalogue;
 
-class Taille extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+
+class Taille extends Model
 {
 
     const NORMALE = 1;
