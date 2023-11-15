@@ -9,9 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Exception\HttpUnauthorizedException;
-use Slim\Handlers\Strategies\RequestHandler;
-use Slim\Psr7\Request;
-use Slim\Psr7\Response;
 
 class midCheckToken implements MiddlewareInterface
 {

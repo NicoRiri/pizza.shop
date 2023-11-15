@@ -8,7 +8,7 @@ Pizza Shop est un projet de qu'on a fait en 3ème année de BUT informatique pou
 - Oudin Clément
 
 ## 💯Déploiement
-Pour déployer l'application il suffit de lancer les conteneurs de pizza.shop.components
+Pour déployer l'application, il suffit de lancer les conteneurs de pizza.shop.components
 
 ```cd pizza.shop.components```
 
