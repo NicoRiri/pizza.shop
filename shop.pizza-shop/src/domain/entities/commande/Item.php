@@ -2,7 +2,9 @@
 
 namespace pizzashop\shop\domain\entities\commande;
 
-class Item extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+
+class Item extends Model
 {
 
     protected $connection = 'commande';
