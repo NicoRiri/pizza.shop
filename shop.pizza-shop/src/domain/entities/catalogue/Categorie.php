@@ -2,7 +2,9 @@
 
 namespace pizzashop\shop\domain\entities\catalogue;
 
-class Categorie extends \Illuminate\Database\Eloquent\Model
+use Illuminate\Database\Eloquent\Model;
+
+class Categorie extends Model
 {
 
     protected $connection = 'catalogue';
