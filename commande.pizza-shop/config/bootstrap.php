@@ -37,7 +37,7 @@ $app->addErrorMiddleware(true, false, false);
 /**
 * ajouter le middleware CORS sur toutes les routes
 */
-$app->add(\pizzashop\shop\app\middleware\midCors::class);
+$app->add(\pizzashop\commande\app\middleware\midCors::class);
 
 // Définit le chemin de base
 $app->setBasePath('');

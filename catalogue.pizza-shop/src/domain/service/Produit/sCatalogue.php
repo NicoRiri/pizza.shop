@@ -14,7 +14,7 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
     {
         $allProd = Produit::all();
         $tabProd = [];
-        foreach ($allProd as $prod){
+        foreach ($allProd as $prod) {
 
             $prodSDto = new smProduitDTO($prod->numero, $prod->libelle, $prod->description, $prod->image);
 
@@ -27,7 +27,7 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
     {
         $allProd = Produit::where('categorie_id', $catId)->get();
         $tabProd = [];
-        foreach ($allProd as $prod){
+        foreach ($allProd as $prod) {
 
             $prodSDto = new smProduitDTO($prod->numero, $prod->libelle, $prod->description, $prod->image);
 
@@ -48,11 +48,20 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
 
         $tailles = $produit->tailles;
 
-        foreach ($tailles as $taille){
+        foreach ($tailles as $taille) {
             $tarif = $produit->tailles()->where('taille_id', $taille->id)->first();
-            $tabTarif[] = ["id_taille" => $taille->id,"libelle_taille" => $taille->libelle, "tarif" => $tarif->pivot->tarif];
+            $tabTarif[] = [
+                $taille->id => [
+                    "libelle_taille" => $taille->libelle,
+                    "tarif" => $tarif->pivot->tarif
+                ]
+            ];
+        }
+        $flattenedTabTarif = [];
+        foreach ($tabTarif as $item) {
+            $flattenedTabTarif[key($item)] = $item[key($item)];
         }
 
-        return new ProduitDTO($num,$produit->libelle, $produit->description, $produit->image, $categorie->libelle, $tabTarif);
+        return new ProduitDTO($num, $produit->libelle, $produit->description, $produit->image, $categorie->libelle, $flattenedTabTarif);
     }
 }

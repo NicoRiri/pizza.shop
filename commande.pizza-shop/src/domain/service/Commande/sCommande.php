@@ -3,6 +3,7 @@
 namespace pizzashop\commande\domain\service\Commande;
 
 use DateTime;
+use GuzzleHttp\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PhpParser\Error;
@@ -71,21 +72,28 @@ class sCommande implements iCommander
             throw new \Error("Commande non valide");
         }
 
-        $sCatalogue = new sCatalogue();
+        $client = new Client();
+
+
 
         $id = $commandeDTO->id;
 
         $total = 0;
         foreach ($commandeDTO->item as $item){
-            $prod = $sCatalogue->getProduit($item->numero, $item->taille);
-            $total+= $prod->tarif;
+
+            $res = $client->request('GET', "http://api.catalogue.pizza-shop/produits/".$item->numero);
+            $res = $res->getBody()->getContents();
+            $prod = json_decode($res, true);
+
+
+            $total+= $prod["tarif"][$item->taille]["tarif"]*$item->quantite;
             $exp = new Item;
             $exp->id = 0;
-            $exp->numero = $prod->numero_produit;
-            $exp->libelle = $prod->libelle_produit;
-            $exp->taille = $prod->taille;
-            $exp->libelle_taille = $prod->libelle_taille;
-            $exp->tarif = $prod->tarif;
+            $exp->numero = $prod["numero_produit"];
+            $exp->libelle = $prod["libelle_produit"];
+            $exp->taille = $item->taille;
+            $exp->libelle_taille = $prod["tarif"][$item->taille]["libelle_taille"];
+            $exp->tarif = $prod["tarif"][$item->taille]["tarif"];
             $exp->quantite = $item->quantite;
             $exp->commande_id = $id;
             $exp->save();
