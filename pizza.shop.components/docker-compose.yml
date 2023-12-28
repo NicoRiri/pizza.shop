@@ -4,25 +4,24 @@ networks:
     driver: bridge
 services:
 
-  # service api.pizza-shop : api pour la prise de commandes
+  # service api.commande.pizza-shop : api pour la prise de commandes
   #
-  api.pizza-shop:
+  api.commande.pizza-shop:
     image: 'canals/php:latest'
     env_file: ./shop.env
     ports:
       - '2080:80'
       - '1443:443'
     volumes:
-      - ../shop.pizza-shop/public:/var/www/html
-      - ../shop.pizza-shop:/var/www
+      - ../commande.pizza-shop/public:/var/www/html
+      - ../commande.pizza-shop:/var/www
     working_dir: /var/www/
     networks:
       pizza-shop.net:
         aliases:
-          - api.pizza-shop.local
+          - api.commande.pizza-shop.local
     depends_on:
       - pizza-shop.commande.db
-      - pizza-shop.catalogue.db
 
 
 
@@ -37,10 +36,27 @@ services:
     networks:
       - pizza-shop.net
     volumes:
-      - ../shop.pizza-shop/sql:/var/sql
+      - ../commande.pizza-shop/sql:/var/sql
 
   # service sql pour le catalogue des pizzas -
   # utilisé par l'api order
+  api.catalogue.pizza-shop:
+    image: 'canals/php:latest'
+    env_file: ./shop.env
+    ports:
+      - '2080:80'
+      - '1443:443'
+    volumes:
+      - ../catalogue.pizza-shop/public:/var/www/html
+      - ../catalogue.pizza-shop:/var/www
+    working_dir: /var/www/
+    networks:
+      pizza-shop.net:
+        aliases:
+          - api.catalogue.pizza-shop.local
+    depends_on:
+      - pizza-shop.catalogue.db
+
   pizza-shop.catalogue.db:
     image: 'postgres:latest'
     env_file: ./cat.env
@@ -49,7 +65,7 @@ services:
     networks:
       - pizza-shop.net
     volumes:
-      - ../shop.pizza-shop/sql:/var/sql'
+      - ../commande.pizza-shop/sql:/var/sql'
   #
   # service administration des bases sql
   #
