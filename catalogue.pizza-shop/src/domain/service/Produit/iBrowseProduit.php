@@ -6,6 +6,6 @@ interface iBrowseProduit
 {
 
     public function getAllProduct();
-    public function getProduitsParCategorie();
+    public function getProduitsParCategorie($catId);
 
 }

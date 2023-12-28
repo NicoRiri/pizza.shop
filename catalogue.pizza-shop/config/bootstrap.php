@@ -15,8 +15,8 @@ $containerBuilder = new ContainerBuilder();
 
 $containerBuilder->addDefinitions([
     // Exemple d'injection d'une dépendance
-    'sCommande' => function () {
-        return new \pizzashop\catalogue\domain\service\Commande\sCommande();
+    'sCatalogue' => function () {
+        return new \pizzashop\catalogue\domain\service\Produit\sCatalogue();
     },
 
     // Vous pouvez ajouter d'autres dépendances ici

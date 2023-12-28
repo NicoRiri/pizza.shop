@@ -3,6 +3,7 @@
 namespace pizzashop\catalogue\domain\service\Produit;
 
 use pizzashop\catalogue\domain\dto\ProduitDTO;
+use pizzashop\catalogue\domain\dto\smProduitDTO;
 use pizzashop\catalogue\domain\entities\catalogue\Produit;
 use pizzashop\catalogue\domain\entities\catalogue\Taille;
 
@@ -11,27 +12,47 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
 
     public function getAllProduct()
     {
-        // TODO: Implement getAllProduct() method.
+        $allProd = Produit::all();
+        $tabProd = [];
+        foreach ($allProd as $prod){
+
+            $prodSDto = new smProduitDTO($prod->numero, $prod->libelle, $prod->description, $prod->image);
+
+            $tabProd[] = $prodSDto;
+        }
+        return $tabProd;
     }
 
-    public function getProduitsParCategorie()
+    public function getProduitsParCategorie($catId)
     {
-        // TODO: Implement getProduitsParCategorie() method.
+        $allProd = Produit::where('categorie_id', $catId)->get();
+        $tabProd = [];
+        foreach ($allProd as $prod){
+
+            $prodSDto = new smProduitDTO($prod->numero, $prod->libelle, $prod->description, $prod->image);
+
+            $tabProd[] = $prodSDto;
+        }
+        return $tabProd;
+
     }
 
-    public function getProduit(int $num, int $taille): ProduitDTO
+    public function getProduit(int $num): ProduitDTO
     {
         // Récupérer le produit en fonction du numéro
         $produit = Produit::where('numero', $num)->first();
 
         $categorie = $produit->categorie()->first();
 
-        $tailles = Taille::where("id", $taille)->first();
+        $tabTarif = [];
 
-        // Récupérer le tarif pour la taille spécifiée
-        $tarif = $produit->tailles()->where('taille_id', $taille)->first();
+        $tailles = $produit->tailles;
 
-        // Construire l'objet ProduitDTO avec les informations nécessaires
-        return new ProduitDTO($num, $taille,$produit->libelle, $categorie->libelle, $tailles->libelle, $tarif->pivot->tarif);
+        foreach ($tailles as $taille){
+            $tarif = $produit->tailles()->where('taille_id', $taille->id)->first();
+            $tabTarif[] = ["id_taille" => $taille->id,"libelle_taille" => $taille->libelle, "tarif" => $tarif->pivot->tarif];
+        }
+
+        return new ProduitDTO($num,$produit->libelle, $produit->description, $produit->image, $categorie->libelle, $tabTarif);
     }
 }

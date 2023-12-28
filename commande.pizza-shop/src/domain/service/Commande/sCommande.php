@@ -10,7 +10,6 @@ use pizzashop\commande\domain\dto\CommandeDTO;
 use pizzashop\commande\domain\dto\ItemDTO;
 use pizzashop\commande\domain\entities\commande\Commande;
 use pizzashop\commande\domain\entities\commande\Item;
-use pizzashop\commande\domain\service\Produit\sCatalogue;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
 use Slim\Exception\HttpNotFoundException;
