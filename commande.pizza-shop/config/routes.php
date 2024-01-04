@@ -15,6 +15,4 @@ return function( \Slim\App $app):void {
     $app->patch("/commandes/{id}[/]", \pizzashop\commande\app\actions\ValiderCommandeAction::class)
         ->add(\pizzashop\commande\app\middleware\midCheckToken::class)
         ->setName('validerCommande');
-    $app->post("/connexion[/]", \pizzashop\commande\app\actions\SignInAction::class)
-        ->setName("connexion");
 };

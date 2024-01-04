@@ -13,12 +13,7 @@ class getProduits extends AbstractAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $sca = $this->container->get("sCatalogue");
-
-
-//        $res = $sco->accederCommande($args['id']);
         $res = $sca->getAllProduct();
-
-
         $response->getBody()->write(json_encode($res));
         return $response;
     }

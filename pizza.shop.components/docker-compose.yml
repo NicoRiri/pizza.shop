@@ -106,3 +106,16 @@ services:
       - pizza-shop.net
     volumes:
       - ../auth.pizza-shop/sql:/var/sql
+
+  api.gateway.pizza-shop:
+    image: 'canals/php:latest'
+    ports:
+      - '6980:80'
+    volumes:
+      - ../gateway.pizza-shop/public:/var/www/html
+      - ../gateway.pizza-shop:/var/www
+    working_dir: /var/www/
+    networks:
+      pizza-shop.net:
+        aliases:
+          - api.gateway.pizza-shop.local
