@@ -9,6 +9,7 @@ return function( \Slim\App $app):void {
     //API Authentification
 
     $app->post('/signin[/]', \pizzashop\gateway\app\actions\SignInAction::class);
+    $app->post('/signup[/]', \pizzashop\gateway\app\actions\SignUpAction::class);
     $app->post("/refresh[/]", \pizzashop\gateway\app\actions\RefreshAction::class);
 
     //API Catalogue

@@ -62,9 +62,13 @@ class sAuthentification implements isAuthentification
         throw new \Exception("Pas le bon refresh token");
     }
 
-    public function signUp($email, $password)
+    public function signUp($email, $password, $username)
     {
-        // TODO: Implement signUp() method.
+        $newUser = new Users();
+        $newUser->email = $email;
+        $newUser->password = $password;
+        $newUser->username = $username;
+        $newUser->save();
     }
 
     public function activate($token_activation)
