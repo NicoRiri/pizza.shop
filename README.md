@@ -61,13 +61,33 @@ Ensuite cliquer sur l'onglet importer afin d'importer les 2 fichiers .sql (l'ord
 - pizza_shop.auth.schema.sql
 - pizza_shop.auth.data.sql
 
-## 🏹 Liens utiles et compte
+## 🏹 Liens utiles, routes et compte
 
 ### ✨ Liens
 
-- API de pizza.shop : http://localhost:2080
-- API d'authentification de pizza.shop : http://localhost:2780
+- Gateway de pizza.shop : http://localhost:6980
+- API Commande de pizza.shop : http://localhost:2080
+- API Catalogue de pizza.shop : http://localhost:2081
+- API Authentification de pizza.shop : http://localhost:2780
 - Adminer : http://localhost:8080
+
+### 🛣️ Routes du Gateway
+
+- 🟢 GET `/produits`
+- 🟢 GET `/produits/{id}`
+- 🟢 GET `/categories/{id}/produits`
+- 🟢 GET `/commandes/{id}`
+- 🟠 POST `/signin`
+  - Passer l'email et le mot de passe en Basic Auth
+- 🟠 POST `/signup`
+  - Passer en Body : {'email' : '[votre email]', 'password' : '[votre mot de passe]', 'username' : '[votre username]'}
+- 🟠 POST `/refresh`
+  - Passer le refresh token en Bearer
+- 🟠 POST `/commandes`
+  - Passer en Body : {"mail_client": "[mail du client]", "type_livraison": [type de livraison 1 ou 2], "items": [ { "numero": [numero d'item], "taille": [taille d'item 1 ou 2], "quantite": [quantite d'item] } ] }
+- 🔵 PATCH `/commandes/{id}`
+  - Passer en Body : { "etat" : "payee" }
+
 
 ### 👤 Compte
 
