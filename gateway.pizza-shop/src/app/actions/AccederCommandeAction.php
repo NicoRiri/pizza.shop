@@ -24,6 +24,7 @@ class AccederCommandeAction extends AbstractAction
             $res = $client->request('GET', "http://api.commande.pizza-shop/commandes/{$args['id']}", [['headers' => $headers], ["body" => $body]]);
             $res = $res->getBody()->getContents();
             $response->getBody()->write($res);
+            $response->withStatus(200);
             return $response;
         } catch(HttpUnauthorizedException $e){
             return $response->withStatus(401);

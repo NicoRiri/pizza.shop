@@ -25,6 +25,7 @@ class CreerCommandeAction extends AbstractAction
             $res = $client->request('POST', "http://api.commande.pizza-shop/commandes/", ['headers' => $headers, "body" => $body]);
             $res = $res->getBody()->getContents();
             $response->getBody()->write($res);
+            $response->withStatus(201);
             return $response;
         } catch(HttpBadRequestException $e){
             return $response->withStatus(400);

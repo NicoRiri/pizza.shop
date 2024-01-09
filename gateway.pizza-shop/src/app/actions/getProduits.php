@@ -17,6 +17,7 @@ class getProduits extends AbstractAction
             $res = $client->request('GET', "http://api.catalogue.pizza-shop/produits");
             $res = $res->getBody()->getContents();
             $response->getBody()->write($res);
+            $response->withStatus(200);
             return $response;
         } catch(HttpNotFoundException $e){
             return $response->withStatus(404);
