@@ -12,11 +12,10 @@ class AccederCommandeAction extends AbstractAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $headers = $request->getHeaders();
-        $body = $request->getBody();
 
         $client = new Client();
 
-        $res = $client->request('GET', "http://api.commande.pizza-shop/commandes/{$args['id']}", [['headers' => $headers], ["body" => $body]]);
+        $res = $client->request('GET', "http://api.commande.pizza-shop/commandes/{$args['id']}", ['headers' => $headers]);
         $res = $res->getBody()->getContents();
         $response->getBody()->write($res);
         return $response;
