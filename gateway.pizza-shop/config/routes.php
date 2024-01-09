@@ -17,6 +17,7 @@ return function( \Slim\App $app):void {
     $app->get('/produits[/]', \pizzashop\gateway\app\actions\getProduits::class);
     $app->get('/produits/{id}[/]', \pizzashop\gateway\app\actions\getProduitsById::class);
     $app->get("/categories/{id}/produits[/]", \pizzashop\gateway\app\actions\getProduitsByCategorie::class);
+    $app->get("/categories/{id}/produits/{libelle}", \pizzashop\gateway\app\actions\getProduitsByCategorieAndLibelle::class);
 
     //API Commande
 

@@ -37,6 +37,20 @@ class sCatalogue implements iInfoProduit, iBrowseProduit
 
     }
 
+    public function getProduitsParCategorieEtLibelle($catId, $libelle)
+    {
+        $allProd = Produit::where('categorie_id', $catId)->where('libelle', "%".$libelle."%")->get();
+        $tabProd = [];
+        foreach ($allProd as $prod) {
+
+            $prodSDto = new smProduitDTO($prod->numero, $prod->libelle, $prod->description, $prod->image);
+
+            $tabProd[] = $prodSDto;
+        }
+        return $tabProd;
+
+    }
+
     public function getProduit(int $num): ProduitDTO
     {
         // Récupérer le produit en fonction du numéro
