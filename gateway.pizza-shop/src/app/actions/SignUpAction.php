@@ -5,6 +5,9 @@ namespace pizzashop\gateway\app\actions;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
 
 class SignUpAction extends AbstractAction
 {
@@ -26,7 +29,7 @@ class SignUpAction extends AbstractAction
             return $response->withStatus(404);
         } catch (HttpBadRequestException $e) {
             return $response->withStatus(400);
-        } catch (httpNotAllowException $e) {
+        } catch (HttpMethodNotAllowedException $e) {
             return $response->withStatus(405);
         }
     }

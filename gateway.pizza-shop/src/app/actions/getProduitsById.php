@@ -5,6 +5,8 @@ namespace pizzashop\gateway\app\actions;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpNotFoundException;
 
 class getProduitsById extends AbstractAction
 {
